@@ -11,6 +11,7 @@ export const SideBar = ({ drawerWidth = 240 }) => {
       sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
     >
       <Drawer
+        PaperProps={{ sx: { backgroundColor: "bg.main" } }}
         variant="permanent" // temporary
         open
         sx={{
@@ -18,19 +19,17 @@ export const SideBar = ({ drawerWidth = 240 }) => {
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ backgroundColor: "bg.main" }}>
           <Typography variant="h6" noWrap component="div">
             {displayName}
           </Typography>
         </Toolbar>
         <Divider />
 
-        <List>
-          {
-            notes.map( note => (
-              <SideBarItem key={note.id} {...note} />
-            ))
-          }
+        <List sx={{ backgroundColor: "bg.main" }}>
+          {notes.map((note) => (
+            <SideBarItem key={note.id} {...note} />
+          ))}
         </List>
       </Drawer>
     </Box>

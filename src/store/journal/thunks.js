@@ -57,26 +57,28 @@ export const startSaveNote = () => {
 export const startUploadingFiles = (files = []) => {
   return async (dispatch) => {
     dispatch(setSaving());
-    
+
     const fileUploadPromises = [];
-    for (const file of files) {
-      fileUploadPromises.push(fileUpload(file));
+    if (files.length > 0) {
+      for (const file of files) {
+        fileUploadPromises.push(fileUpload(file));
+      }
+
+      const photosUrls = await Promise.all(fileUploadPromises);
+
+      dispatch(setPhotosToActiveNote(photosUrls));
     }
-
-    const photos = await Promise.all(fileUploadPromises);
-
-    dispatch(setPhotosToActiveNote(photos));
   };
 };
 
 export const startDeletingNote = () => {
   return async (dispatch, getSate) => {
-    const {uid} = getSate().auth
-    const {active:note} = getSate().journal
+    const { uid } = getSate().auth;
+    const { active: note } = getSate().journal;
 
     const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
     await deleteDoc(docRef);
-    
-    dispatch(deleteNoteById(note.id))
-  }
-}
+
+    dispatch(deleteNoteById(note.id));
+  };
+};
